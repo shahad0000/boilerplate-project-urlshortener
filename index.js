@@ -23,7 +23,11 @@ let urlDB = {};
 app.post('/api/shorturl', (req, res) => {
   const url = req.body.url;
   try {
-    new URL(url);    
+    const urlObject = new URL(url);   
+    if (urlObject !== "http:" && urlObject !== "https:") {
+      res.json({ error: "invalid url" })
+    }
+    
     const shorturl = Math.floor(Math.random() * 1000);
     urlDB[shorturl] = url;
     res.json({ original_url: url, short_url: shorturl})
